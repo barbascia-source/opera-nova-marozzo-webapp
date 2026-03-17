@@ -1,0 +1,354 @@
+:root {
+    --color-bg: #fdfaf6;      /* Colore base pergamena */
+    --color-bg-alt: #f1e9d9;  /* Pergamena più scura */
+    --color-text: #2c241b;    /* Inchiostro antico scuro */
+    --color-accent: #8b0000;  /* Rosso 'rubrica' rinascimentale */
+    --color-accent-hover: #b30000;
+    --color-gold: #c5a059;    /* Oro antico */
+    --color-border: #d4c4a8;  /* Bordo pagina */
+    
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Lora', serif;
+    --shadow-page: 0 4px 12px rgba(44, 36, 27, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    font-size: 18px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><filter id="a"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23a)" opacity="0.1"/></svg>');
+    background-blend-mode: overlay;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+}
+
+h1 { font-size: 2.5rem; text-align: center; color: var(--color-accent); margin-bottom: 1rem; }
+h2 { font-size: 2rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.3em; margin-top: 2rem;}
+h3 { font-size: 1.5rem; color: var(--color-accent); margin-top: 1.5rem; }
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--color-accent-hover);
+}
+
+p {
+    margin-bottom: 1.2em;
+}
+
+ul, ol {
+    margin-bottom: 1.2em;
+    padding-left: 2em;
+}
+
+li {
+    margin-bottom: 0.5em;
+}
+
+/* Layout */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.site-header {
+    background-color: var(--color-bg-alt);
+    border-bottom: 2px solid var(--color-border);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.site-title {
+    font-size: 2.5rem;
+    color: var(--color-accent);
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.site-subtitle {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--color-text);
+}
+
+.main-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.nav-link {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.router-link-active {
+    color: var(--color-accent);
+    border-color: var(--color-gold);
+    background-color: var(--color-bg-alt);
+}
+
+.site-main {
+    flex: 1;
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem 3rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-page);
+    border-radius: 2px;
+}
+
+.site-footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--color-bg-alt);
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+}
+
+/* Component: Home */
+.hero-section {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.hero-image {
+    max-width: 250px;
+    margin: 1.5rem auto;
+    border: 1px solid var(--color-gold);
+    padding: 5px;
+    background: #fff;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+
+.bio-section {
+    column-count: 1;
+    text-align: justify;
+}
+
+@media (min-width: 768px) {
+    .bio-section {
+        column-count: 2;
+        column-gap: 2rem;
+    }
+}
+
+.drop-cap:first-letter {
+    float: left;
+    font-size: 4rem;
+    line-height: 0.8;
+    padding-top: 0.1em;
+    padding-right: 0.1em;
+    padding-left: 0;
+    font-family: var(--font-heading);
+    color: var(--color-accent);
+}
+
+/* Component: Book */
+.book-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.book-title {
+    font-size: 2.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.weapon-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.weapon-tag {
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-gold);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-family: var(--font-heading);
+}
+
+.book-intro {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* Interactives: Assault Timeline */
+.timeline-container {
+    margin: 2rem 0;
+    border-left: 2px solid var(--color-gold);
+    padding-left: 2rem;
+    position: relative;
+}
+
+.assault-item {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.assault-item::before {
+    content: '';
+    position: absolute;
+    left: -2.35rem;
+    top: 0.4rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    border: 2px solid var(--color-bg);
+}
+
+.assault-header {
+    cursor: pointer;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--color-border);
+    transition: color 0.2s;
+}
+
+.assault-header:hover {
+    color: var(--color-accent);
+}
+
+.assault-content {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: var(--color-bg-alt);
+    border-radius: 4px;
+    border-left: 3px solid var(--color-accent);
+    font-size: 0.95rem;
+}
+
+/* Technical Focus */
+.technical-focus {
+    margin: 3rem 0;
+    padding: 2rem;
+    background-color: #faf4e8;
+    border: 1px solid var(--color-gold);
+    position: relative;
+    box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.1);
+}
+
+.technical-focus::before {
+    content: 'Focus Tecnico';
+    position: absolute;
+    top: -12px;
+    left: 2rem;
+    background: var(--color-bg);
+    padding: 0 10px;
+    font-family: var(--font-heading);
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: 1px solid var(--color-gold);
+}
+
+.technical-focus ul {
+    margin-bottom: 0;
+}
+
+/* Glossary Tooltip */
+.glossary-term {
+    color: var(--color-accent);
+    border-bottom: 1px dotted var(--color-accent);
+    cursor: help;
+    font-weight: 500;
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-container {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-text);
+    color: #fff;
+    padding: 0.8rem;
+    border-radius: 4px;
+    width: max-content;
+    max-width: 280px;
+    font-size: 0.85rem;
+    font-family: var(--font-body);
+    font-weight: normal;
+    text-align: center;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.tooltip-container::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--color-text) transparent transparent transparent;
+}
+
+.glossary-term:hover .tooltip-container {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .site-main {
+        margin: 0;
+        padding: 1.5rem;
+        border: none;
+        box-shadow: none;
+    }
+    .site-title { font-size: 2rem; }
+    .book-title { font-size: 2.2rem; }
+    h1 { font-size: 2rem; }
+}

@@ -80,7 +80,7 @@ const booksData = [
             }
         ],
         technicalFocus: {
-            title: "Dinamiche dello Spadone",
+            title: "Dinamiche della Spada a Due Mani",
             points: [
                 "Leva biomeccanica: l'uso del pomolo per creare coppie di forza sui fendenti ed ottenere estrema velocità rotazionale.",
                 "Parate al corpo a corpo: la guardia crociata ('elsa' e bracci della croce) funge da uncino attivo nel gioco stretto.",

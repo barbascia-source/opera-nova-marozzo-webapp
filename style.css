@@ -199,6 +199,11 @@ li {
     transform: translateY(0);
 }
 
+/* "Basi" e "Libri": etichette dropdown sempre in oro */
+.dropdown-container > .nav-link {
+    color: var(--color-gold);
+}
+
 .dropdown-item {
     padding: 0.8rem 1.2rem;
     font-family: var(--font-body);

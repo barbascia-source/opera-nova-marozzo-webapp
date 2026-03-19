@@ -1,10 +1,11 @@
 // js/app.js
 // Entry point dell'applicazione Vue
 
-// 1. Configurazione delle rotte
 const routes = [
     { path: '/', component: Home },
     { path: '/biografia', component: Biografia },
+    { path: '/sds', component: SdS },
+    { path: '/passeggio', component: Passeggio },
     { path: '/libro/:id', component: BookView, props: true }
 ];
 
@@ -29,12 +30,20 @@ const App = {
                     <router-link to="/biografia" class="nav-link">Biografia</router-link>
                     
                     <div class="dropdown-container">
+                        <span class="nav-link">Basi &nbsp; &#9662;</span>
+                        <div class="dropdown-menu">
+                            <router-link to="/sds" class="dropdown-item">Struttura della spada</router-link>
+                            <router-link to="/passeggio" class="dropdown-item">Passeggio</router-link>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown-container">
                         <span class="nav-link">Libri &nbsp; &#9662;</span>
                         <div class="dropdown-menu">
-                            <router-link to="/libro/1" class="dropdown-item">I: Spada+Brocchiere</router-link>
+                            <router-link to="/libro/1" class="dropdown-item">I: Spada + Brocchiere</router-link>
                             <router-link to="/libro/2" class="dropdown-item">II: Armi filo</router-link>
                             <router-link to="/libro/3" class="dropdown-item">III: Due mani</router-link>
-                            <router-link to="/libro/4" class="dropdown-item">IV: Pugnale+Asta</router-link>
+                            <router-link to="/libro/4" class="dropdown-item">IV: Pugnale + Asta</router-link>
                             <router-link to="/libro/5" class="dropdown-item">V: Duello</router-link>
                         </div>
                     </div>

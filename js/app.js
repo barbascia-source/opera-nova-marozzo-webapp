@@ -29,22 +29,22 @@ const App = {
                     <router-link to="/" class="nav-link">Home</router-link>
                     <router-link to="/biografia" class="nav-link">Biografia</router-link>
                     
-                    <div class="dropdown-container">
+                    <div class="dropdown-container" :class="{ 'is-open': openDropdown === 'basi' }" @click.stop="toggleDropdown('basi')">
                         <span class="nav-link">Basi &nbsp; &#9662;</span>
                         <div class="dropdown-menu">
-                            <router-link to="/sds" class="dropdown-item">Struttura della spada</router-link>
-                            <router-link to="/passeggio" class="dropdown-item">Passeggio</router-link>
+                            <router-link to="/sds" class="dropdown-item" @click="closeDropdown">Struttura della spada</router-link>
+                            <router-link to="/passeggio" class="dropdown-item" @click="closeDropdown">Passeggio</router-link>
                         </div>
                     </div>
                     
-                    <div class="dropdown-container">
+                    <div class="dropdown-container" :class="{ 'is-open': openDropdown === 'libri' }" @click.stop="toggleDropdown('libri')">
                         <span class="nav-link">Libri &nbsp; &#9662;</span>
                         <div class="dropdown-menu">
-                            <router-link to="/libro/1" class="dropdown-item">I: Spada + Brocchiere</router-link>
-                            <router-link to="/libro/2" class="dropdown-item">II: Armi filo</router-link>
-                            <router-link to="/libro/3" class="dropdown-item">III: Due mani</router-link>
-                            <router-link to="/libro/4" class="dropdown-item">IV: Pugnale + Asta</router-link>
-                            <router-link to="/libro/5" class="dropdown-item">V: Duello</router-link>
+                            <router-link to="/libro/1" class="dropdown-item" @click="closeDropdown">I: Spada + Brocchiere</router-link>
+                            <router-link to="/libro/2" class="dropdown-item" @click="closeDropdown">II: Armi filo</router-link>
+                            <router-link to="/libro/3" class="dropdown-item" @click="closeDropdown">III: Due mani</router-link>
+                            <router-link to="/libro/4" class="dropdown-item" @click="closeDropdown">IV: Pugnale + Asta</router-link>
+                            <router-link to="/libro/5" class="dropdown-item" @click="closeDropdown">V: Duello</router-link>
                         </div>
                     </div>
                 </nav>
@@ -69,7 +69,8 @@ const App = {
     data() {
         return {
             books: booksData,
-            showScrollBtn: false
+            showScrollBtn: false,
+            openDropdown: null
         }
     },
     methods: {
@@ -78,13 +79,24 @@ const App = {
         },
         scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        toggleDropdown(name) {
+            this.openDropdown = this.openDropdown === name ? null : name;
+        },
+        closeDropdown() {
+            this.openDropdown = null;
+        },
+        handleOutsideClick() {
+            this.openDropdown = null;
         }
     },
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
+        document.addEventListener('click', this.handleOutsideClick);
     },
     unmounted() {
         window.removeEventListener('scroll', this.handleScroll);
+        document.removeEventListener('click', this.handleOutsideClick);
     }
 };
 

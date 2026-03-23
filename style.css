@@ -193,7 +193,8 @@ li {
     flex-direction: column;
 }
 
-.dropdown-container:hover .dropdown-menu {
+.dropdown-container:hover .dropdown-menu,
+.dropdown-container.is-open .dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -455,14 +456,15 @@ li {
 /* Responsive */
 @media (max-width: 768px) {
     :root {
-        --nav-height: 120px;
-        /* Spazio extra per wrapping navbar su mobile */
+        --nav-height: 150px;
+        /* Aumentato per evitare tagli con wrapping */
     }
 
     .site-header {
         flex-direction: column;
         justify-content: center;
-        padding: 0.5rem;
+        padding: 0.8rem 0.5rem;
+        /* Leggero aumento padding verticale */
     }
 
     .logo-container {
@@ -470,15 +472,37 @@ li {
     }
 
     .logo-image {
-        width: 160px;
-        height: 48px;
+        width: 140px;
+        /* Leggermente più piccolo su mobile */
+        height: 40px;
     }
 
     .main-nav {
-        gap: 0.5rem;
+        gap: 0.4rem;
         flex-wrap: wrap;
         width: 100%;
         justify-content: center;
+    }
+
+    .nav-link {
+        font-size: 0.95rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    /* Ottimizzazione extra per schermi piccolissimi */
+    @media (max-width: 360px) {
+        :root {
+            --nav-height: 160px;
+        }
+
+        .nav-link {
+            font-size: 0.85rem;
+            padding: 0.3rem 0.5rem;
+        }
+
+        .main-nav {
+            gap: 0.2rem;
+        }
     }
 
     .site-main {

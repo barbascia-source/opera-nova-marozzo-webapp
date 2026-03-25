@@ -508,18 +508,38 @@ li {
     }
 
     .main-nav {
-        gap: 0.2rem;
-        flex-wrap: nowrap;
+        gap: 0.5rem;
+        flex-wrap: wrap;
         width: 100%;
         justify-content: center;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: visible;
     }
 
-    .nav-link {
+    .nav-link,
+    .dropdown-trigger {
         font-size: 0.85rem;
         padding: 0.4rem 0.4rem;
         white-space: nowrap;
+    }
+
+    .dropdown-container {
+        position: static;
+    }
+
+    .dropdown-menu {
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: 0;
+        border-right: none;
+        border-left: none;
+        transform: translateY(-10px);
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.9);
+    }
+
+    .dropdown-container:hover .dropdown-menu,
+    .dropdown-container.is-open .dropdown-menu {
+        transform: translateY(0);
     }
 
     /* Ottimizzazione extra per schermi piccolissimi */

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'codex-spadae-v2';
+const CACHE_NAME = 'codex-spadae-v3';
 const urlsToCache = [
   './',
   './index.html',

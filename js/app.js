@@ -26,11 +26,11 @@ const App = {
                 </div>
                 
                 <nav class="main-nav">
-                    <router-link to="/" class="nav-link">Home</router-link>
-                    <router-link to="/biografia" class="nav-link">Biografia</router-link>
+                    <router-link to="/" class="nav-link" style="font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Home</router-link>
+                    <router-link to="/biografia" class="nav-link" style="font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Biografia</router-link>
                     
                     <div class="dropdown-container" :class="{ 'is-open': openDropdown === 'basi' }" @click.stop="toggleDropdown('basi')">
-                        <span class="nav-link">Basi &nbsp; &#9662;</span>
+                         <button class="dropdown-trigger" :class="{ active: $route.path === '/sds' || $route.path === '/passeggio' }">Basi &nbsp; &#9662;</button>
                         <div class="dropdown-menu">
                             <router-link to="/sds" class="dropdown-item" @click="closeDropdown">Struttura della spada</router-link>
                             <router-link to="/passeggio" class="dropdown-item" @click="closeDropdown">Passeggio</router-link>
@@ -38,7 +38,7 @@ const App = {
                     </div>
                     
                     <div class="dropdown-container" :class="{ 'is-open': openDropdown === 'libri' }" @click.stop="toggleDropdown('libri')">
-                        <span class="nav-link">Libri &nbsp; &#9662;</span>
+                        <span class="dropdown-trigger" :class="{ active: $route.path.startsWith('/libro') }">Libri &nbsp; &#9662;</span>
                         <div class="dropdown-menu">
                             <router-link to="/libro/1" class="dropdown-item" @click="closeDropdown">I: Spada + Brocchiere</router-link>
                             <router-link to="/libro/2" class="dropdown-item" @click="closeDropdown">II: Armi filo</router-link>
@@ -48,7 +48,7 @@ const App = {
                         </div>
                     </div>
                     
-                    <button class="nav-link install-btn" @click="installApp" style="background:none; border:none; cursor:pointer; font:inherit; font-weight:600;">Download</button>
+                    <button class="nav-link install-btn" @click="installApp"style="background:none; border:none; cursor:pointer; font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Installa App</button>
                 </nav>
             </header>
             
@@ -66,6 +66,18 @@ const App = {
                     Sviluppato con Vanilla CSS & Vue 3 
                 </p>
             </footer>
+
+            <!-- Popup Installazione -->
+            <div class="modal-overlay" v-if="showInstallPopup" @click.self="cancelInstall">
+                <div class="modal-content">
+                    <h3>Installazione App</h3>
+                    <p>Vuoi scaricare e installare Codex Spadae sul tuo dispositivo per usarlo offline?</p>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary" @click="cancelInstall">No</button>
+                        <button class="btn btn-primary" @click="confirmInstall">Sì</button>
+                    </div>
+                </div>
+            </div>
         </div>
     `,
     data() {
@@ -73,7 +85,8 @@ const App = {
             books: booksData,
             showScrollBtn: false,
             openDropdown: null,
-            deferredPrompt: null
+            deferredPrompt: null,
+            showInstallPopup: false
         }
     },
     created() {
@@ -87,7 +100,30 @@ const App = {
         });
     },
     methods: {
-        async installApp() {
+        installApp() {
+            const isIos = () => {
+                const userAgent = window.navigator.userAgent.toLowerCase();
+                return /iphone|ipad|ipod/.test(userAgent);
+            }
+            const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+            if (isInStandaloneMode() || window.matchMedia('(display-mode: standalone)').matches) {
+                alert("L'app è già installata.");
+                return;
+            }
+
+            if (this.deferredPrompt || (isIos() && !isInStandaloneMode())) {
+                this.showInstallPopup = true;
+            } else {
+                alert("L'installazione automatica non è supportata dal tuo browser. Cerca l'opzione 'Installa app' o 'Aggiungi a schermata Home' nel menu del browser.");
+            }
+        },
+        cancelInstall() {
+            this.showInstallPopup = false;
+        },
+        async confirmInstall() {
+            this.showInstallPopup = false;
+
             if (this.deferredPrompt) {
                 this.deferredPrompt.prompt();
                 const { outcome } = await this.deferredPrompt.userChoice;
@@ -99,17 +135,13 @@ const App = {
                 this.deferredPrompt = null;
             } else {
                 const isIos = () => {
-                   const userAgent = window.navigator.userAgent.toLowerCase();
-                   return /iphone|ipad|ipod/.test( userAgent );
+                    const userAgent = window.navigator.userAgent.toLowerCase();
+                    return /iphone|ipad|ipod/.test(userAgent);
                 }
                 const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
                 if (isIos() && !isInStandaloneMode()) {
                     alert("Per installare l'app su iOS: tocca il pulsante Condividi (icona col quadrato e freccia verso l'alto) e seleziona 'Aggiungi alla schermata Home'.");
-                } else if (isInStandaloneMode() || window.matchMedia('(display-mode: standalone)').matches) {
-                    alert("L'app è già installata.");
-                } else {
-                    alert("L'installazione automatica non è supportata dal tuo browser. Cerca l'opzione 'Installa app' o 'Aggiungi a schermata Home' nel menu del browser.");
                 }
             }
         },

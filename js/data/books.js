@@ -30,7 +30,16 @@ const booksData = [
                 "Raccordo con la lama: le mani lavorano assieme, spada e brocchiere si uniscono in guardia (es. Guardia d'Alicorno).",
                 "Uso in gioco stretto: blocca la visuale, devia l'arma avversaria o colpisce con il bordo o l'umbone."
             ]
-        }
+        },
+        guardie: [
+            {
+                id: 11,
+                titolo: 'WIP',
+                preview: 'WIP.',
+                descrizione: 'WIP',
+                immagine: 'A.png'
+            },
+        ]
     },
     {
         id: 2,
@@ -56,7 +65,16 @@ const booksData = [
                 "Reazione: usare un movimento di falso dritto ascendente per respingere il taglio avversario aprendo la linea.",
                 "Contrattacco: abbattere un colpo di filo dritto mentre l'avversario è fuori l'equilibrio."
             ]
-        }
+        },
+        guardie: [
+            {
+                id: 21,
+                titolo: 'wip',
+                preview: 'WIP.',
+                descrizione: 'WIP',
+                immagine: 'WIP.png'
+            },
+        ]
     },
     {
         id: 3,
@@ -86,7 +104,65 @@ const booksData = [
                 "Parate al corpo a corpo: la guardia crociata ('elsa' e bracci della croce) funge da uncino attivo nel gioco stretto.",
                 "Mezza spada offensiva: colpire il volto o la gola direttamente col tallone della spada e la riga, in transizioni strette."
             ]
-        }
+        },
+        guardie: [
+            {
+                id: 31,
+                titolo: 'Cinghiara Porta di Ferro Stretta',
+                preview: 'Guardia bassa fondamentale della tradizione bolognese.',
+                descrizione: 'Lama verticale davanti al corpo, con punta rivolta al petto dell’avversario. Posizione difensiva perfetta per nascondere le intenzioni e invitare l’attacco in basso.',
+                immagine: 'public/cinghiara_porta_di_ferro_stretta.png'
+            },
+            {
+                id: 32,
+                titolo: 'Cinghiara Porta di Ferro Larga',
+                preview: 'WIP.',
+                descrizione: 'Variante più ampia per il gioco largo.',
+                immagine: 'public/cinghiara_porta_di_ferro_larga.png'
+            },
+            {
+                id: 33,
+                titolo: 'Guardia D\'intrare in Largo Passo',
+                preview: 'WIP.',
+                descrizione: 'Posizione aggressiva per entrare nella guardia nemica.',
+                immagine: 'public/guardia_dintrare_in_largo_passo.png'
+            },
+            {
+                id: 34,
+                titolo: 'Porta di Ferro Stretta',
+                preview: 'WIP.',
+                descrizione: 'Difesa stretta verso il basso.',
+                immagine: 'public/porta_di_ferro_stretta.png'
+            },
+            {
+                id: 35,
+                titolo: 'Guardia di Testa',
+                preview: 'WIP.',
+                descrizione: 'Guardia alta per proteggersi da fendenti discendenti.',
+                immagine: 'public/guardia_di_testa.png'
+            },
+            {
+                id: 36,
+                titolo: 'Guardia di Faccia',
+                preview: 'WIP.',
+                descrizione: 'La lama protegge il bersaglio alto invitando un colpo al di sotto.',
+                immagine: 'public/guardia_di_faccia.png'
+            },
+            {
+                id: 37,
+                titolo: 'Varianti Alte',
+                preview: 'WIP.',
+                descrizione: 'Posture alte con la spada a due mani, pronte a calare fendenti devastanti.',
+                immagini: ['public/varianti_alte_1.png', 'public/varianti_alte_2.png']
+            },
+            {
+                id: 38,
+                titolo: 'Varianti Basse',
+                preview: 'WIP.',
+                descrizione: 'Posture saggianti in gioco largo per misurare l\'allungo.',
+                immagine: 'public/varianti_basse_1.png'
+            }
+        ]
     },
     {
         id: 4,
@@ -115,7 +191,16 @@ const booksData = [
                 "Pugnale: richiede immediatezza psicologica ed entrata nel fulcro dell'avversario tramite 'prese'. Non vi è finto riparo ma solo offesa o avvolgimento.",
                 "Armi in asta: si basa sui giochi di leva delle braccia posteriori. Uso dell'asta stessa come arma da deflessione per liberare la linea di punta."
             ]
-        }
+        },
+        guardie: [
+            {
+                id: 41,
+                titolo: 'wip',
+                preview: 'WIP.',
+                descrizione: 'WIP',
+                immagine: 'WIP.png'
+            },
+        ]
     },
     {
         id: 5,

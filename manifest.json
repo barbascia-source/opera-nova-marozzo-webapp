@@ -1,0 +1,21 @@
+{
+  "name": "Codex Spadae",
+  "short_name": "Codex Spadae",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1a1614",
+  "theme_color": "#cca352",
+  "description": "Arte della Scherma Rinascimentale - Ricostruzione marziale dell'Opera Nova",
+  "icons": [
+    {
+      "src": "public/logo-codex-spadae.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "public/logo-codex-spadae.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

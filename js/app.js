@@ -47,6 +47,8 @@ const App = {
                             <router-link to="/libro/5" class="dropdown-item" @click="closeDropdown">V: Duello</router-link>
                         </div>
                     </div>
+                    
+                    <button class="nav-link install-btn" @click="installApp" style="background:none; border:none; cursor:pointer; font:inherit; font-weight:600;">Download</button>
                 </nav>
             </header>
             
@@ -70,10 +72,47 @@ const App = {
         return {
             books: booksData,
             showScrollBtn: false,
-            openDropdown: null
+            openDropdown: null,
+            deferredPrompt: null
         }
     },
+    created() {
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+        });
+        window.addEventListener('appinstalled', () => {
+            this.deferredPrompt = null;
+            console.log('PWA was installed');
+        });
+    },
     methods: {
+        async installApp() {
+            if (this.deferredPrompt) {
+                this.deferredPrompt.prompt();
+                const { outcome } = await this.deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                } else {
+                    console.log('User dismissed the install prompt');
+                }
+                this.deferredPrompt = null;
+            } else {
+                const isIos = () => {
+                   const userAgent = window.navigator.userAgent.toLowerCase();
+                   return /iphone|ipad|ipod/.test( userAgent );
+                }
+                const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+                if (isIos() && !isInStandaloneMode()) {
+                    alert("Per installare l'app su iOS: tocca il pulsante Condividi (icona col quadrato e freccia verso l'alto) e seleziona 'Aggiungi alla schermata Home'.");
+                } else if (isInStandaloneMode() || window.matchMedia('(display-mode: standalone)').matches) {
+                    alert("L'app è già installata.");
+                } else {
+                    alert("L'installazione automatica non è supportata dal tuo browser. Cerca l'opzione 'Installa app' o 'Aggiungi a schermata Home' nel menu del browser.");
+                }
+            }
+        },
         handleScroll() {
             this.showScrollBtn = window.scrollY > 300;
         },

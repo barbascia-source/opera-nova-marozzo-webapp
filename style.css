@@ -503,17 +503,15 @@ li {
     }
 
     .logo-image {
-        width: 140px;
-        /* Leggermente più piccolo su mobile */
-        height: 40px;
+        width: 142px;
+        height: 42px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 2px;
     }
 
     .main-nav {
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        width: 100%;
-        justify-content: center;
-        overflow: visible;
+        display: none;
     }
 
     .nav-link,
@@ -867,4 +865,173 @@ li {
     background: #cca352;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(204, 163, 82, 0.4);
+}
+
+/* ------------------------------------- */
+/* PDF Viewer Styles                     */
+/* ------------------------------------- */
+.pdf-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.pdf-viewer-container {
+    width: 100%;
+    max-width: 900px;
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-gold);
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin: 2rem 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.pdf-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--color-border);
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pdf-page-indicator {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-gold);
+}
+
+.pdf-zoom-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.pdf-canvas-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+    background: #e6dfcf; /* Sfondo chiaro pergamenaceo per il pdf base non supporta temi*/
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .pdf-viewer-container {
+        padding: 0.5rem;
+    }
+    .pdf-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.8rem;
+    }
+    .pdf-toolbar .btn,
+    .pdf-zoom-controls .btn {
+        width: 100%;
+    }
+}
+
+/* ------------------------------------- */
+/* Mobile Menu Overlay & Panel           */
+/* ------------------------------------- */
+.mobile-menu-overlay {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - var(--nav-height));
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+}
+
+.mobile-menu-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: var(--color-bg-alt);
+    border-right: 2px solid var(--color-gold);
+    padding: 1rem;
+    overflow-y: auto;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.8);
+}
+
+.mobile-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--color-gold);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.mobile-link {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-gold);
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0;
+}
+
+.mobile-submenu {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.5rem;
+    background: rgba(0,0,0,0.2);
+}
+
+.mobile-subitem {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid rgba(58, 46, 36, 0.5);
+    color: var(--color-text);
+}
+
+.rotate-up {
+    transform: rotate(180deg);
+    display: inline-block;
+    transition: transform 0.3s;
+}
+
+/* Animations per pannello mobile */
+.slide-fade-enter-active, .slide-fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+.slide-fade-enter-active .mobile-menu-panel, 
+.slide-fade-leave-active .mobile-menu-panel {
+    transition: transform 0.3s ease;
+}
+
+.slide-fade-enter-from, .slide-fade-leave-to {
+    opacity: 0;
+}
+.slide-fade-enter-from .mobile-menu-panel,
+.slide-fade-leave-to .mobile-menu-panel {
+    transform: translateX(-100%);
+}
+
+@media (min-width: 769px) {
+    .mobile-menu-overlay, .mobile-menu-panel {
+        display: none !important;
+    }
 }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'codex-spadae-v3';
+const CACHE_NAME = 'codex-spadae-v4';
 const urlsToCache = [
   './',
   './index.html',
@@ -22,7 +22,8 @@ const urlsToCache = [
   './public/guardia_di_faccia.png',
   './public/varianti_alte_1.png',
   './public/varianti_alte_2.png',
-  './public/varianti_basse_1.png'
+  './public/varianti_basse_1.png',
+  './js/components/LetturaPDF.js'
 ];
 
 self.addEventListener('install', event => {

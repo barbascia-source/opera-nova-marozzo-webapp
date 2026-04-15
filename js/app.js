@@ -6,7 +6,8 @@ const routes = [
     { path: '/biografia', component: Biografia },
     { path: '/sds', component: SdS },
     { path: '/passeggio', component: Passeggio },
-    { path: '/libro/:id', component: BookView, props: true }
+    { path: '/libro/:id', component: BookView, props: true },
+    { path: '/lettura-pdf', component: LetturaPDF }
 ];
 
 // 2. Creazione dell'istanza del router
@@ -22,7 +23,7 @@ const App = {
         <div class="app-container">
             <header class="site-header">
                 <div class="logo-container">
-                    <img src="public/logo-codex-spadae.png" alt="Codex Spadae Logo" class="logo-image">
+                    <img src="public/logo-codex-spadae.png" alt="Codex Spadae Logo" class="logo-image" @click="handleLogoClick" style="cursor: pointer;">
                 </div>
                 
                 <nav class="main-nav">
@@ -48,9 +49,47 @@ const App = {
                         </div>
                     </div>
                     
-                    <button class="nav-link install-btn" @click="installApp"style="background:none; border:none; cursor:pointer; font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Installa App</button>
+                    <router-link to="/lettura-pdf" class="nav-link" style="font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Lettura PDF</router-link>
+                    
+                    <button class="nav-link install-btn" @click="installApp" style="background:none; border:none; cursor:pointer; font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Installa App</button>
                 </nav>
             </header>
+            
+            <!-- Pannello Mobile -->
+            <transition name="slide-fade">
+                <div class="mobile-menu-overlay" v-if="mobileMenuOpen" @click.self="closeMobileMenu">
+                    <div class="mobile-menu-panel">
+                        <button class="mobile-close-btn" @click="closeMobileMenu">&times;</button>
+                        <nav class="mobile-nav">
+                            <router-link to="/" class="nav-link mobile-link" @click="closeMobileMenu">Home</router-link>
+                            <router-link to="/biografia" class="nav-link mobile-link" @click="closeMobileMenu">Biografia</router-link>
+                            
+                            <div class="mobile-dropdown-container">
+                                <div class="nav-link mobile-link" @click="toggleMobileSubmenu('basi')">Basi &nbsp; <span :class="{'rotate-up': mobileSubmenu === 'basi'}">&#9662;</span></div>
+                                <div class="mobile-submenu" v-show="mobileSubmenu === 'basi'">
+                                    <router-link to="/sds" class="dropdown-item mobile-subitem" @click="closeMobileMenu">Struttura della spada</router-link>
+                                    <router-link to="/passeggio" class="dropdown-item mobile-subitem" @click="closeMobileMenu">Passeggio</router-link>
+                                </div>
+                            </div>
+                            
+                            <div class="mobile-dropdown-container">
+                                <div class="nav-link mobile-link" @click="toggleMobileSubmenu('libri')">Libri &nbsp; <span :class="{'rotate-up': mobileSubmenu === 'libri'}">&#9662;</span></div>
+                                <div class="mobile-submenu" v-show="mobileSubmenu === 'libri'">
+                                    <router-link to="/libro/1" class="dropdown-item mobile-subitem" @click="closeMobileMenu">I: Spada + Brocchiere</router-link>
+                                    <router-link to="/libro/2" class="dropdown-item mobile-subitem" @click="closeMobileMenu">II: Armi filo</router-link>
+                                    <router-link to="/libro/3" class="dropdown-item mobile-subitem" @click="closeMobileMenu">III: Due mani</router-link>
+                                    <router-link to="/libro/4" class="dropdown-item mobile-subitem" @click="closeMobileMenu">IV: Pugnale + Asta</router-link>
+                                    <router-link to="/libro/5" class="dropdown-item mobile-subitem" @click="closeMobileMenu">V: Duello</router-link>
+                                </div>
+                            </div>
+                            
+                            <router-link to="/lettura-pdf" class="nav-link mobile-link" @click="closeMobileMenu">Lettura PDF</router-link>
+                            
+                            <button class="nav-link mobile-link install-btn" @click="installApp" style="background:none; border:none; cursor:pointer;">Installa App</button>
+                        </nav>
+                    </div>
+                </div>
+            </transition>
             
             <main class="site-main">
                 <router-view></router-view>
@@ -86,7 +125,9 @@ const App = {
             showScrollBtn: false,
             openDropdown: null,
             deferredPrompt: null,
-            showInstallPopup: false
+            showInstallPopup: false,
+            mobileMenuOpen: false,
+            mobileSubmenu: null
         }
     },
     created() {
@@ -100,6 +141,26 @@ const App = {
         });
     },
     methods: {
+        handleLogoClick() {
+            if (window.innerWidth <= 768) {
+                this.toggleMobileMenu();
+            } else {
+                this.$router.push('/');
+            }
+        },
+        toggleMobileMenu() {
+            this.mobileMenuOpen = !this.mobileMenuOpen;
+            if (!this.mobileMenuOpen) {
+                this.mobileSubmenu = null;
+            }
+        },
+        closeMobileMenu() {
+            this.mobileMenuOpen = false;
+            this.mobileSubmenu = null;
+        },
+        toggleMobileSubmenu(name) {
+            this.mobileSubmenu = this.mobileSubmenu === name ? null : name;
+        },
         installApp() {
             const isIos = () => {
                 const userAgent = window.navigator.userAgent.toLowerCase();

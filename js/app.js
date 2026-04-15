@@ -49,7 +49,7 @@ const App = {
                         </div>
                     </div>
                     
-                    <router-link to="/lettura-pdf" class="nav-link" style="font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Lettura PDF</router-link>
+                    <router-link to="/lettura-pdf" class="nav-link" style="font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Lettura Libro</router-link>
                     
                     <button class="nav-link install-btn" @click="installApp" style="background:none; border:none; cursor:pointer; font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Installa App</button>
                 </nav>
@@ -83,7 +83,7 @@ const App = {
                                 </div>
                             </div>
                             
-                            <router-link to="/lettura-pdf" class="nav-link mobile-link" @click="closeMobileMenu">Lettura PDF</router-link>
+                            <router-link to="/lettura-pdf" class="nav-link mobile-link" @click="closeMobileMenu">Lettura Libro</router-link>
                             
                             <button class="nav-link mobile-link install-btn" @click="installApp" style="background:none; border:none; cursor:pointer;">Installa App</button>
                         </nav>

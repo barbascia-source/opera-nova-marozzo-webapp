@@ -110,14 +110,14 @@ const booksData = [
                 id: 31,
                 titolo: 'Cinghiara Porta di Ferro Stretta',
                 preview: 'Guardia bassa fondamentale della tradizione bolognese.',
-                descrizione: 'Lama verticale davanti al corpo, con punta rivolta al petto dell’avversario. Posizione difensiva perfetta per nascondere le intenzioni e invitare l’attacco in basso.',
+                descrizione: 'La Cinghiara Porta di Ferro è una guardia bassa, raccolta e molto solida nella protezione del lato NON predominate dello schermidore, lasciando però scoperto il lato debole ad un possibile invito. Il piede NON dominate è in avanti rivolto leggermente verso l estero con la spada dallo stesso lato, la punta è rivolta verso il volto dell avversario',
                 immagine: 'public/cinghiara_porta_di_ferro_stretta.png'
             },
             {
                 id: 32,
                 titolo: 'Cinghiara Porta di Ferro Larga',
                 preview: 'WIP.',
-                descrizione: 'Variante più ampia per il gioco largo.',
+                descrizione: 'Variante Cinghiara Porta di Ferro Stretta, l impostazione generale del corpo rimane identica, a cambiare è la direzione della Punte della spada che è rivolta verso il basso, per una maggiore enfatizzazione dell invito nel lato scoperto.',
                 immagine: 'public/cinghiara_porta_di_ferro_larga.png'
             },
             {

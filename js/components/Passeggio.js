@@ -5,8 +5,9 @@ const Passeggio = {
     data() {
         return {
             activeGuard: null,
+            isZoomed: false,
             guards: [
-                { id: 'coda-lunga', name: 'Guardia Coda Lunga', position: 'Piede destro avanti o indietro, spada tenuta bassa sul fianco destro con la punta rivolta all\'indietro.',  attack: 'Falso dritto ascendente o mandritto montante.', x: 50, y: 90 },
+                { id: 'coda-lunga', name: 'Guardia Coda Lunga', position: 'Piede destro avanti o indietro, spada tenuta bassa sul fianco destro con la punta rivolta all\'indietro.', attack: 'Falso dritto ascendente o mandritto montante.', x: 50, y: 90 },
                 { id: 'alta', name: 'Guardia Alta', position: 'Piede destro avanti, spada alzata sopra la spalla destra pronta a calare un fendente.', attack: 'Fendente mandritto o fendente riverso.', x: 15, y: 65 },
                 { id: 'testa', name: 'Guardia di Testa', position: 'Piedi in guardia larga, spada tenuta orizzontale o leggermente inclinata sopra la testa a protezione del capo.', attack: 'Risposta di taglio sul tempo.', x: 15, y: 35 },
                 { id: 'faccia', name: 'Guardia di Faccia', position: 'Spada distesa in avanti all\'altezza del volto dell\'avversario per tenere la distanza e minacciare di punta.', attack: 'Punta dritta al volto o al petto.', x: 50, y: 10 },
@@ -35,18 +36,24 @@ const Passeggio = {
     template: `
         <div class="passeggio-page">
             <header class="book-header">
-                <h1 class="book-title">Il Passeggio di Guardia in Guardia</h1>
+                <h1 class="book-title">Il Passeggio</h1>
                 <p class="site-subtitle">Achille Marozzo</p>
             </header>
             
             <div class="book-intro">
+                <p>Nel trattato di Achille Marozzo il passeggio è l’arte del muoversi con ordine fra le guardie, mantenendo misura, stabilità e intenzione offensiva. Non indica soltanto il passo in senso fisico, ma una progressione tecnica in cui piedi, busto, spada e linea del corpo cooperano per accompagnare il passaggio da una guardia all’altra senza perdere equilibrio né presenza offensiva.</p>
                 <p>Il passeggio rappresenta il movimento fondamentale della scuola bolognese. <parsed-text text="Marozzo"></parsed-text> descrive il "passeggiare di guardia in guardia" come transizione fluida e controllata tra le varie guardie, mantenendo sempre il controllo della distanza e la minaccia verso l'avversario.</p>
                 
-                <p>Il passeggio inizia sempre da Guardia <parsed-text text="Coda Lunga"></parsed-text> o Guardia di Piedi Dritti, le posizioni più sicure per il movimento. Ogni passo mantiene la spada in minaccia attiva.</p>
+                <p>Nel contesto dell’Opera Nova, il passeggio ha una funzione didattica e marziale insieme: educa il praticante a conoscere la geometria del combattimento, a riconoscere i tempi di transizione e a rendere ogni spostamento già utile all’azione. Per questo il movimento non è mai neutro: ogni passo prepara una copertura, un invito, una traversa, una percussione o l’ingresso in una nuova guardia da cui continuare il gioco schermistico.</p>                
                 
-                <p>Le transizioni seguono una sequenza codificata: Coda Lunga &rarr; Guardia Alta &rarr; Guardia di Testa &rarr; Guardia di Faccia &rarr; Guardia di Punto &rarr; ritorno a Coda Lunga.</p>
+                <p>Marozzo costruisce il combattimento come una catena coerente di posture e azioni, e il passeggio è il principio che unisce questa catena. Passare da guardia a guardia significa imparare a governare distanza, lato forte e lato debole, orientamento delle anche e disposizione della lama, così che il corpo resti sempre pronto a ferire o a difendersi nello stesso istante.</p>                
                 
-                <p>Il movimento è circolare, non lineare: si passa "passeggiando" mantenendo il triangolo dei piedi e il peso ben distribuito.</p>
+                <p>Dal punto di vista tecnico, il passeggio esprime una mobilità disciplinata: non corsa, non arretramento confuso, ma avanzare, traversare o voltarsi secondo una logica precisa. Il suo scopo è conservare struttura e misura mentre si modifica l’angolo d’azione, rendendo possibile un combattimento fluido nel quale ogni mutazione di guardia conserva continuità tattica.</p>
+            </div>
+            
+            <div style="text-align: center; margin: 2rem 0;">
+                <img src="public/passeggio-marozziano.png" alt="Passeggio Marozziano" @click="isZoomed = true" style="max-width: 200%; width: 465px; height: auto; border: 1px solid var(--color-gold); padding: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-radius: 4px; cursor: zoom-in; transition: transform 0.2s;" />
+                <p style="margin-top: 0.8rem; font-family: var(--font-body); font-style: italic; font-size: 0.9rem; color: var(--color-text); opacity: 0.8;">Utilizza il proprio piede predominante come principale -orma rossa-</p>
             </div>
             
             <div class="diagram-section">
@@ -64,9 +71,9 @@ const Passeggio = {
                         
                         <!-- Linee di connessione animate -->
                         <path v-for="(conn, idx) in connections" :key="'conn-'+idx"
-                              :d="conn.path" 
-                              :class="['diagram-path', { 'dashed-path': conn.dashed }]"
-                              marker-end="url(#arrow)" />
+                               :d="conn.path" 
+                               :class="['diagram-path', { 'dashed-path': conn.dashed }]"
+                               marker-end="url(#arrow)" />
                     </svg>
                     
                     <!-- Nodi interattivi delle guardie -->
@@ -134,6 +141,16 @@ const Passeggio = {
                     </div>
                 </details>
             </div>
+
+            <!-- Zoom Modal Overlay -->
+            <transition name="fade">
+                <div v-if="isZoomed" class="modal-overlay" @click="isZoomed = false" style="z-index: 3000; cursor: zoom-out;">
+                    <div style="position: relative; max-width: 90vw; max-height: 90vh;" @click.stop>
+                        <img src="public/passeggio-marozziano.png" alt="Passeggio Marozziano Zoomed" style="max-width: 100%; max-height: 90vh; display: block; border: 2px solid var(--color-gold); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); border-radius: 4px;" />
+                        <button @click="isZoomed = false" style="position: absolute; top: -15px; right: -15px; background: var(--color-accent); color: white; border: 1px solid var(--color-gold); border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.5);">&times;</button>
+                    </div>
+                </div>
+            </transition>
         </div>
     `,
     components: {

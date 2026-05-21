@@ -1030,6 +1030,14 @@ li {
     transform: translateX(-100%);
 }
 
+/* Transizione Fade */
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
+
 @media (min-width: 769px) {
     .mobile-menu-overlay, .mobile-menu-panel {
         display: none !important;

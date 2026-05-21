@@ -1,5 +1,13 @@
-const CACHE_NAME = 'codex-spadae-v4';
-const urlsToCache = [
+// ============================================================
+// Service Worker — Codex Spadae PWA
+// Strategia: Network-First (HTML/CSS/JS) + Stale-While-Revalidate (immagini/font)
+// ============================================================
+
+const CACHE_VERSION = 5;
+const CACHE_NAME = `codex-spadae-v${CACHE_VERSION}`;
+
+// Risorse da pre-cachare durante l'installazione
+const PRECACHE_URLS = [
   './',
   './index.html',
   './style.css',
@@ -13,6 +21,7 @@ const urlsToCache = [
   './js/components/SdS.js',
   './js/components/Passeggio.js',
   './js/components/BookView.js',
+  './js/components/LetturaPDF.js',
   './public/logo-codex-spadae.png',
   './public/cinghiara_porta_di_ferro_stretta.png',
   './public/cinghiara_porta_di_ferro_larga.png',
@@ -22,62 +31,149 @@ const urlsToCache = [
   './public/guardia_di_faccia.png',
   './public/varianti_alte_1.png',
   './public/varianti_alte_2.png',
-  './public/varianti_basse_1.png',
-  './js/components/LetturaPDF.js'
+  './public/varianti_basse_1.png'
 ];
 
+// ---- Utility: classifica la richiesta ----
+
+function isNavigationOrHTML(request) {
+  if (request.mode === 'navigate') return true;
+  const url = new URL(request.url);
+  return url.pathname.endsWith('.html') || url.pathname.endsWith('/');
+}
+
+function isCriticalAsset(request) {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  return path.endsWith('.css') || path.endsWith('.js');
+}
+
+function isStaticAsset(request) {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  return /\.(png|jpg|jpeg|gif|svg|webp|ico|woff2?|ttf|eot|otf)$/i.test(path);
+}
+
+// ---- INSTALL ----
 self.addEventListener('install', event => {
-  self.skipWaiting(); // Forza l'attivazione immediata del nuovo Service Worker
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+      .then(cache => cache.addAll(PRECACHE_URLS))
+      .then(() => self.skipWaiting()) // Forza attivazione immediata
   );
 });
 
+// ---- ACTIVATE: pulizia cache vecchie ----
 self.addEventListener('activate', event => {
-  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName); // Rimuove le vecchie cache (es. v1)
-          }
-        })
-      );
-    }).then(() => self.clients.claim()) // Prende il controllo di tutte le pagine aperte immediatamente
+    caches.keys()
+      .then(keys => Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => {
+            console.log('[SW] Elimino cache vecchia:', key);
+            return caches.delete(key);
+          })
+      ))
+      .then(() => self.clients.claim()) // Prende controllo immediato
   );
 });
 
+// ---- MESSAGGIO SKIP_WAITING ----
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+// ---- FETCH ----
 self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
+  const { request } = event;
 
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          // Ritorna la risorsa se già presente in cache
-          return response;
-        }
-        return fetch(event.request).then(
-          function(response) {
-            // Mette in cache anche le risorse richieste dinamicamente (es. Vue da unpkg.com e i font Google)
-            // status 0 permette di cachare richieste "opaque" (CORS cross-origin limitate)
-            if(!response || (response.status !== 200 && response.status !== 0)) {
-              return response;
-            }
-            var responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
-            return response;
-          }
-        ).catch(function() {
-            console.warn('Offline: risorsa di rete non disponibile e non presente in cache -> ', event.request.url);
-        });
-      })
-  );
+  // Ignora richieste non-GET
+  if (request.method !== 'GET') return;
+
+  // 1) HTML / navigazione → NETWORK-FIRST
+  if (isNavigationOrHTML(request)) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  // 2) CSS / JS principali → NETWORK-FIRST
+  if (isCriticalAsset(request)) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  // 3) Immagini / font / icone → STALE-WHILE-REVALIDATE
+  if (isStaticAsset(request)) {
+    event.respondWith(staleWhileRevalidate(request));
+    return;
+  }
+
+  // 4) Tutto il resto (es. CDN Vue, Google Fonts CSS) → NETWORK-FIRST
+  event.respondWith(networkFirst(request));
 });
+
+// ============================================================
+// Strategie di caching
+// ============================================================
+
+/**
+ * NETWORK-FIRST
+ * Prova la rete; se riesce aggiorna la cache.
+ * Se la rete fallisce, serve dalla cache (offline).
+ */
+async function networkFirst(request) {
+  try {
+    const networkResponse = await fetch(request);
+    // Aggiorna la cache solo se la risposta è valida
+    if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
+      const cache = await caches.open(CACHE_NAME);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (err) {
+    // Rete non disponibile → fallback alla cache
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    // Se nemmeno in cache, errore generico offline
+    console.warn('[SW] Offline e non in cache:', request.url);
+    // Per le navigazioni restituisci la index.html cachata (SPA fallback)
+    if (request.mode === 'navigate') {
+      return caches.match('./index.html');
+    }
+    return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
+  }
+}
+
+/**
+ * STALE-WHILE-REVALIDATE
+ * Serve subito dalla cache (veloce), e in background aggiorna la cache dalla rete.
+ */
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(CACHE_NAME);
+  const cachedResponse = await cache.match(request);
+
+  // Aggiornamento in background (non blocca la risposta)
+  const fetchPromise = fetch(request)
+    .then(networkResponse => {
+      if (networkResponse && (networkResponse.status === 200 || networkResponse.status === 0)) {
+        cache.put(request, networkResponse.clone());
+      }
+      return networkResponse;
+    })
+    .catch(() => {
+      // Nessun problema: siamo offline, la cache basta
+    });
+
+  // Se abbiamo la cache, la serviamo subito
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  // Se non c'è in cache, aspettiamo la rete
+  return fetchPromise;
+}

@@ -45,11 +45,45 @@
     <script src="js/app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
+            // Flag per evitare reload multipli
+            let refreshing = false;
+
+            // Quando un nuovo SW prende il controllo → reload una sola volta
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    console.log('[App] Nuovo Service Worker attivo — ricarico la pagina');
+                    window.location.reload();
+                }
+            });
+
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js').then(registration => {
-                    console.log('SW registered: ', registration);
-                }).catch(registrationError => {
-                    console.log('SW registration failed: ', registrationError);
+                    console.log('[App] SW registrato:', registration);
+
+                    // Controlla aggiornamenti ogni 60 secondi
+                    setInterval(() => registration.update(), 60 * 1000);
+
+                    // Se c'è già un worker in attesa, inviagli SKIP_WAITING
+                    if (registration.waiting) {
+                        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                    }
+
+                    // Intercetta aggiornamenti futuri
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        console.log('[App] Nuovo SW trovato, stato:', newWorker.state);
+
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Nuovo SW installato mentre uno vecchio è già attivo → forza skip
+                                console.log('[App] Nuovo SW installato — invio SKIP_WAITING');
+                                newWorker.postMessage({ type: 'SKIP_WAITING' });
+                            }
+                        });
+                    });
+                }).catch(err => {
+                    console.error('[App] Registrazione SW fallita:', err);
                 });
             });
         }

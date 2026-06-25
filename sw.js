@@ -3,7 +3,7 @@
 // Strategia: Network-First (HTML/CSS/JS) + Stale-While-Revalidate (immagini/font)
 // ============================================================
 
-const CACHE_VERSION = 5;
+const CACHE_VERSION = 6;
 const CACHE_NAME = `codex-spadae-v${CACHE_VERSION}`;
 
 // Risorse da pre-cachare durante l'installazione
@@ -23,6 +23,8 @@ const PRECACHE_URLS = [
   './js/components/BookView.js',
   './js/components/LetturaPDF.js',
   './public/logo-codex-spadae.png',
+  './public/spada.png',
+  './public/passeggio-marozziano.png',
   './public/cinghiara_porta_di_ferro_stretta.png',
   './public/cinghiara_porta_di_ferro_larga.png',
   './public/guardia_dintrare_in_largo_passo.png',

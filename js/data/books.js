@@ -1,6 +1,7 @@
 // js/data/books.js
-// Contengono le informazioni per i singoli libri
-
+/**
+ * Dati strutturati per i libri dell'Opera Nova.
+ */
 const booksData = [
     {
         id: 1,
@@ -31,15 +32,7 @@ const booksData = [
                 "Uso in gioco stretto: blocca la visuale, devia l'arma avversaria o colpisce con il bordo o l'umbone."
             ]
         },
-        guardie: [
-            {
-                id: 11,
-                titolo: 'WIP',
-                preview: 'WIP.',
-                descrizione: 'WIP',
-                immagine: 'A.png'
-            },
-        ]
+        guardie: []
     },
     {
         id: 2,
@@ -66,15 +59,7 @@ const booksData = [
                 "Contrattacco: abbattere un colpo di filo dritto mentre l'avversario è fuori l'equilibrio."
             ]
         },
-        guardie: [
-            {
-                id: 21,
-                titolo: 'wip',
-                preview: 'WIP.',
-                descrizione: 'WIP',
-                immagine: 'WIP.png'
-            },
-        ]
+        guardie: []
     },
     {
         id: 3,
@@ -111,42 +96,42 @@ const booksData = [
                 titolo: 'Cinghiara Porta di Ferro Stretta',
                 preview: 'Guardia bassa fondamentale della tradizione bolognese.',
                 descrizione: 'La Cinghiara Porta di Ferro è una guardia bassa, raccolta e molto solida nella protezione del lato NON predominate dello schermidore, lasciando però scoperto il lato debole ad un possibile invito. Il piede NON dominate è in avanti rivolto leggermente verso l estero con la spada dallo stesso lato, la punta è rivolta verso il volto dell avversario',
-                immagine: 'public/cinghiara_porta_di_ferro_stretta.png'
+                immagini: ['public/cinghiara_porta_di_ferro_stretta.png']
             },
             {
                 id: 32,
                 titolo: 'Cinghiara Porta di Ferro Larga',
                 preview: 'WIP.',
                 descrizione: 'Variante Cinghiara Porta di Ferro Stretta, l impostazione generale del corpo rimane identica, a cambiare è la direzione della Punte della spada che è rivolta verso il basso, per una maggiore enfatizzazione dell invito nel lato scoperto.',
-                immagine: 'public/cinghiara_porta_di_ferro_larga.png'
+                immagini: ['public/cinghiara_porta_di_ferro_larga.png']
             },
             {
                 id: 33,
                 titolo: 'Guardia D\'intrare in Largo Passo',
                 preview: 'WIP.',
                 descrizione: 'Posizione aggressiva per entrare nella guardia nemica.',
-                immagine: 'public/guardia_dintrare_in_largo_passo.png'
+                immagini: ['public/guardia_dintrare_in_largo_passo.png']
             },
             {
                 id: 34,
                 titolo: 'Porta di Ferro Stretta',
                 preview: 'WIP.',
                 descrizione: 'Difesa stretta verso il basso.',
-                immagine: 'public/porta_di_ferro_stretta.png'
+                immagini: ['public/porta_di_ferro_stretta.png']
             },
             {
                 id: 35,
                 titolo: 'Guardia di Testa',
                 preview: 'WIP.',
                 descrizione: 'Guardia alta per proteggersi da fendenti discendenti.',
-                immagine: 'public/guardia_di_testa.png'
+                immagini: ['public/guardia_di_testa.png']
             },
             {
                 id: 36,
                 titolo: 'Guardia di Faccia',
                 preview: 'WIP.',
                 descrizione: 'La lama protegge il bersaglio alto invitando un colpo al di sotto.',
-                immagine: 'public/guardia_di_faccia.png'
+                immagini: ['public/guardia_di_faccia.png']
             },
             {
                 id: 37,
@@ -160,7 +145,7 @@ const booksData = [
                 titolo: 'Varianti Basse',
                 preview: 'WIP.',
                 descrizione: 'Posture saggianti in gioco largo per misurare l\'allungo.',
-                immagine: 'public/varianti_basse_1.png'
+                immagini: ['public/varianti_basse_1.png']
             }
         ]
     },
@@ -192,15 +177,7 @@ const booksData = [
                 "Armi in asta: si basa sui giochi di leva delle braccia posteriori. Uso dell'asta stessa come arma da deflessione per liberare la linea di punta."
             ]
         },
-        guardie: [
-            {
-                id: 41,
-                titolo: 'wip',
-                preview: 'WIP.',
-                descrizione: 'WIP',
-                immagine: 'WIP.png'
-            },
-        ]
+        guardie: []
     },
     {
         id: 5,
@@ -226,6 +203,7 @@ const booksData = [
                 "Abbigliamento del Duellante: norme stringenti sulle cuciture e sull'assenza di foderature corazzate occulte o talismani e 'brevia'.",
                 "Ruolo del Padrino: i garanti che ispezionano le armi dell'avversario per garantire assoluta parità volumetrica."
             ]
-        }
+        },
+        guardie: []
     }
 ];

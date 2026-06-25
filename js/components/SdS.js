@@ -1,11 +1,33 @@
 // js/components/SdS.js
+/**
+ * Componente "Struttura della Spada".
+ * Mostra l'anatomia della spada e sezione manutenzione con accordion.
+ */
 const SdS = {
+    name: 'SdS',
     data() {
         return {
-            openSection: null
+            /** @type {number|null} Indice della sezione manutenzione aperta */
+            openSection: null,
+            /** Dati per le sezioni manutenzione (accordion) */
+            manutenzione: [
+                {
+                    titolo: 'Pulizia della lama',
+                    contenuto: 'Dopo ogni utilizzo rimuovere residui di sudore e umidità con un panno morbido.<br>Applicare olio protettivo (es. olio di camelia) per prevenire la ruggine.<br>Conservare in luogo asciutto.'
+                },
+                {
+                    titolo: 'Controllo della struttura',
+                    contenuto: 'Verificare periodicamente che il pomolo sia ben fissato.<br>Controllare la solidità della croce di guardia.<br>Ispezionare il manico per eventuali allentamenti.'
+                },
+                {
+                    titolo: 'Affilatura',
+                    contenuto: 'Per le feder da allenamento mantenere il filo smussato per sicurezza.<br>Rimuovere eventuali sbavature con una lima fine.<br>Non affilare mai una feder da addestramento.'
+                }
+            ]
         }
     },
     methods: {
+        /** Apre/chiude una sezione manutenzione */
         toggleSection(index) {
             this.openSection = this.openSection === index ? null : index;
         }
@@ -37,9 +59,9 @@ const SdS = {
                     Parte finale della spada, fondamentale per il bilanciamento, nella Spada a due mani si impugna con la mano secondaria e si utilizza come leva per guidare la spada.
                 </p>
                 
-                <figure style="text-align: center; margin: 2rem 0;">
-                    <img src="public/spada.png" alt="Schema della spada" style="max-width: 100%; height: auto; border: 1px solid var(--color-border); border-radius: 4px;">
-                    <figcaption style="font-size: 0.9em; font-style: italic; margin-top: 0.5rem;">Esempio di Feder (Spada a due mani)</figcaption>
+                <figure class="sds-figure">
+                    <img src="public/spada.png" alt="Schema della spada" class="sds-image">
+                    <figcaption class="sds-caption">Esempio di Feder (Spada a due mani)</figcaption>
                 </figure>
             </div>
 
@@ -49,7 +71,7 @@ const SdS = {
                 <div v-for="(item, index) in manutenzione" :key="index" class="assault-item">
                     <div class="assault-header" @click="toggleSection(index)">
                         <span>{{ item.titolo }}</span>
-                        <span style="font-size: 0.8em; color: var(--color-gold);">
+                        <span class="accordion-toggle-label">
                             {{ openSection === index ? '▲ chiudi' : '▼ esplora' }}
                         </span>
                     </div>
@@ -59,24 +81,5 @@ const SdS = {
                 </div>
             </div>
         </div>
-    `,
-    data() {
-        return {
-            openSection: null,
-            manutenzione: [
-                {
-                    titolo: 'Pulizia della lama',
-                    contenuto: 'Dopo ogni utilizzo rimuovere residui di sudore e umidità con un panno morbido.<br>Applicare olio protettivo (es. olio di camelia) per prevenire la ruggine.<br>Conservare in luogo asciutto.'
-                },
-                {
-                    titolo: 'Controllo della struttura',
-                    contenuto: 'Verificare periodicamente che il pomolo sia ben fissato.<br>Controllare la solidità della croce di guardia.<br>Ispezionare il manico per eventuali allentamenti.'
-                },
-                {
-                    titolo: 'Affilatura',
-                    contenuto: 'Per le feder da allenamento mantenere il filo smussato per sicurezza.<br>Rimuovere eventuali sbavature con una lima fine.<br>Non affilare mai una feder da addestramento.'
-                }
-            ]
-        }
-    }
+    `
 };

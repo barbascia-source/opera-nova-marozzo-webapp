@@ -1,5 +1,23 @@
 // js/app.js
-// Entry point dell'applicazione Vue
+/**
+ * Entry point dell'applicazione Vue — Codex Spadae.
+ * Configura il router, il componente root App, e monta l'istanza Vue.
+ */
+
+// ---- Utility globali PWA ----
+
+/** Rileva se il dispositivo è iOS */
+function isIos() {
+    return /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+}
+
+/** Rileva se l'app è già in modalità standalone (installata) */
+function isInStandaloneMode() {
+    return ('standalone' in window.navigator && window.navigator.standalone) ||
+        window.matchMedia('(display-mode: standalone)').matches;
+}
+
+// ---- Router ----
 
 const routes = [
     { path: '/', component: Home },
@@ -10,15 +28,22 @@ const routes = [
     { path: '/lettura-pdf', component: LetturaPDF }
 ];
 
-// 2. Creazione dell'istanza del router
 const router = VueRouter.createRouter({
-    // Utilizziamo WebHashHistory in modo che funzioni perfettamente anche aprendo il file HTML localmente
     history: VueRouter.createWebHashHistory(),
-    routes
+    routes,
+    /** Scroll-to-top automatico su ogni navigazione */
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        }
+        return { top: 0, behavior: 'smooth' };
+    }
 });
 
-// 3. Definizione del componente Root
+// ---- Componente Root ----
+
 const App = {
+    name: 'App',
     template: `
         <div class="app-container">
             <header class="site-header">
@@ -27,8 +52,8 @@ const App = {
                 </div>
                 
                 <nav class="main-nav">
-                    <router-link to="/" class="nav-link" style="font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Home</router-link>
-                    <router-link to="/biografia" class="nav-link" style="font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Biografia</router-link>
+                    <router-link to="/" class="nav-link">Home</router-link>
+                    <router-link to="/biografia" class="nav-link">Biografia</router-link>
                     
                     <div class="dropdown-container" :class="{ 'is-open': openDropdown === 'basi' }" @click.stop="toggleDropdown('basi')">
                          <button class="dropdown-trigger" :class="{ active: $route.path === '/sds' || $route.path === '/passeggio' }">Basi &nbsp; &#9662;</button>
@@ -49,9 +74,9 @@ const App = {
                         </div>
                     </div>
                     
-                    <router-link to="/lettura-pdf" class="nav-link" style="font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Lettura Libro</router-link>
+                    <router-link to="/lettura-pdf" class="nav-link">Lettura Libro</router-link>
                     
-                    <button class="nav-link install-btn" @click="installApp" style="background:none; border:none; cursor:pointer; font-family:'IM Fell English',serif; font-weight:600; color: var(--color-gold);">Installa App</button>
+                    <button class="nav-link install-btn" @click="installApp">Installa App</button>
                 </nav>
             </header>
             
@@ -85,7 +110,7 @@ const App = {
                             
                             <router-link to="/lettura-pdf" class="nav-link mobile-link" @click="closeMobileMenu">Lettura Libro</router-link>
                             
-                            <button class="nav-link mobile-link install-btn" @click="installApp" style="background:none; border:none; cursor:pointer;">Installa App</button>
+                            <button class="nav-link mobile-link install-btn" @click="installApp">Installa App</button>
                         </nav>
                     </div>
                 </div>
@@ -101,7 +126,7 @@ const App = {
             
             <footer class="site-footer">
                 <p>Codex Spadae &bull; Ricostruzione marziale dell'Opera Nova (1536)</p>
-                <p style="font-size: 0.8em; margin-top: 0.5rem; color: var(--color-border); opacity: 0.7;">
+                <p class="footer-credits">
                     Sviluppato con Vanilla CSS & Vue 3 
                 </p>
             </footer>
@@ -121,12 +146,19 @@ const App = {
     `,
     data() {
         return {
+            /** @type {Array} Dati dei libri importati da books.js */
             books: booksData,
+            /** @type {boolean} Mostra/nascondi il pulsante scroll-to-top */
             showScrollBtn: false,
+            /** @type {string|null} Nome del dropdown attualmente aperto (desktop) */
             openDropdown: null,
+            /** @type {BeforeInstallPromptEvent|null} Evento PWA per l'installazione */
             deferredPrompt: null,
+            /** @type {boolean} Mostra/nascondi il popup di installazione */
             showInstallPopup: false,
+            /** @type {boolean} Stato del menu mobile */
             mobileMenuOpen: false,
+            /** @type {string|null} Nome del submenu mobile aperto */
             mobileSubmenu: null
         }
     },
@@ -141,6 +173,7 @@ const App = {
         });
     },
     methods: {
+        /** Su mobile il logo apre il menu; su desktop naviga alla home */
         handleLogoClick() {
             if (window.innerWidth <= 768) {
                 this.toggleMobileMenu();
@@ -148,27 +181,25 @@ const App = {
                 this.$router.push('/');
             }
         },
+        /** Toggle del menu mobile */
         toggleMobileMenu() {
             this.mobileMenuOpen = !this.mobileMenuOpen;
             if (!this.mobileMenuOpen) {
                 this.mobileSubmenu = null;
             }
         },
+        /** Chiude il menu mobile */
         closeMobileMenu() {
             this.mobileMenuOpen = false;
             this.mobileSubmenu = null;
         },
+        /** Apre/chiude un submenu nel pannello mobile */
         toggleMobileSubmenu(name) {
             this.mobileSubmenu = this.mobileSubmenu === name ? null : name;
         },
+        /** Gestisce il flusso di installazione PWA */
         installApp() {
-            const isIos = () => {
-                const userAgent = window.navigator.userAgent.toLowerCase();
-                return /iphone|ipad|ipod/.test(userAgent);
-            }
-            const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
-
-            if (isInStandaloneMode() || window.matchMedia('(display-mode: standalone)').matches) {
+            if (isInStandaloneMode()) {
                 alert("L'app è già installata.");
                 return;
             }
@@ -179,45 +210,40 @@ const App = {
                 alert("L'installazione automatica non è supportata dal tuo browser. Cerca l'opzione 'Installa app' o 'Aggiungi a schermata Home' nel menu del browser.");
             }
         },
+        /** Annulla l'installazione */
         cancelInstall() {
             this.showInstallPopup = false;
         },
+        /** Conferma e avvia l'installazione PWA */
         async confirmInstall() {
             this.showInstallPopup = false;
 
             if (this.deferredPrompt) {
                 this.deferredPrompt.prompt();
                 const { outcome } = await this.deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                } else {
-                    console.log('User dismissed the install prompt');
-                }
+                console.log(outcome === 'accepted' ? 'User accepted the install prompt' : 'User dismissed the install prompt');
                 this.deferredPrompt = null;
-            } else {
-                const isIos = () => {
-                    const userAgent = window.navigator.userAgent.toLowerCase();
-                    return /iphone|ipad|ipod/.test(userAgent);
-                }
-                const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
-
-                if (isIos() && !isInStandaloneMode()) {
-                    alert("Per installare l'app su iOS: tocca il pulsante Condividi (icona col quadrato e freccia verso l'alto) e seleziona 'Aggiungi alla schermata Home'.");
-                }
+            } else if (isIos() && !isInStandaloneMode()) {
+                alert("Per installare l'app su iOS: tocca il pulsante Condividi (icona col quadrato e freccia verso l'alto) e seleziona 'Aggiungi alla schermata Home'.");
             }
         },
+        /** Listener scroll per mostrare/nascondere il pulsante scroll-to-top */
         handleScroll() {
             this.showScrollBtn = window.scrollY > 300;
         },
+        /** Scrolla dolcemente alla cima della pagina */
         scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         },
+        /** Toggle dropdown desktop */
         toggleDropdown(name) {
             this.openDropdown = this.openDropdown === name ? null : name;
         },
+        /** Chiude dropdown desktop */
         closeDropdown() {
             this.openDropdown = null;
         },
+        /** Chiude dropdown quando si clicca fuori */
         handleOutsideClick() {
             this.openDropdown = null;
         }
@@ -232,11 +258,7 @@ const App = {
     }
 };
 
-// 4. Inizializzazione e montaggio
+// ---- Inizializzazione e montaggio ----
 const app = Vue.createApp(App);
-
-// Registriamo il componente ParsedText globalmente (opzionale, ma lo abbiamo già nei components locals)
-// app.component('parsed-text', ParsedText);
-
 app.use(router);
 app.mount('#app');

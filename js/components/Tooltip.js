@@ -3,6 +3,19 @@
 
 const ParsedText = {
     props: ['text'],
+    data() {
+        return {
+            isOpen: false
+        };
+    },
+    methods: {
+        toggleTooltip() {
+            this.isOpen = !this.isOpen;
+        },
+        closeTooltip() {
+            this.isOpen = false;
+        }
+    },
     computed: {
         segments() {
             if (!this.text) return [];
@@ -51,7 +64,12 @@ const ParsedText = {
         }
     },
     template: `
-        <span>
+        <span tabindex="0" 
+              @click="toggleTooltip" 
+              @keydown.enter="toggleTooltip" 
+              @keydown.escape="closeTooltip" 
+              @blur="closeTooltip" 
+              :class="{ 'tooltip-open': isOpen }">
             <span v-for="(seg, idx) in segments" :key="idx" 
                   :class="{ 'glossary-term': seg.type === 'term' }">
                 {{ seg.content }}

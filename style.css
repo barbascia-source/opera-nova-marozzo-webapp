@@ -267,6 +267,111 @@ li {
     color: #fff;
 }
 
+.dropdown-divider {
+    height: 1px;
+    background-color: var(--color-border);
+    margin: 0.4rem 0;
+}
+
+/* ============================================= */
+/* Navigation Tabs & Cards (Equip / Opera Nova)  */
+/* ============================================= */
+
+.equip-tabs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-gold);
+    padding-bottom: 0.8rem;
+}
+
+.equip-tab-btn {
+    background-color: var(--color-bg-alt);
+    color: var(--color-text);
+    font-family: var(--font-nav);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--color-gold);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.equip-tab-btn:hover {
+    background-color: rgba(179, 139, 77, 0.2);
+    border-color: var(--color-gold);
+}
+
+.equip-tab-btn.active {
+    background-color: var(--color-accent);
+    color: #ffffff;
+    border-color: var(--color-gold);
+    box-shadow: 0 2px 8px rgba(158, 42, 43, 0.4);
+}
+
+.equip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.equip-card {
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-gold);
+    border-radius: 4px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.equip-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    background-color: rgba(36, 29, 24, 0.95);
+}
+
+.card-icon {
+    font-size: 2rem;
+    color: var(--color-gold);
+    margin-bottom: 0.5rem;
+}
+
+.card-link {
+    margin-top: auto;
+    padding-top: 1rem;
+    font-family: var(--font-nav);
+    color: var(--color-accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.equip-sub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 1.5rem;
+}
+
+.equip-sub-item {
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-gold);
+    padding: 1.2rem;
+    border-radius: 2px;
+}
+
+.equip-sub-item h3 {
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+    font-size: 1.2rem;
+}
+
 /* ============================================= */
 /* Main Content & Footer                         */
 /* ============================================= */
@@ -1019,6 +1124,10 @@ li {
 /* Mobile Menu Overlay & Panel                   */
 /* ============================================= */
 
+body.body-scroll-lock {
+    overflow: hidden !important;
+}
+
 .mobile-menu-overlay {
     position: fixed;
     top: var(--nav-height);
@@ -1033,7 +1142,8 @@ li {
     position: absolute;
     top: 0;
     left: 0;
-    width: 280px;
+    width: 290px;
+    max-width: 85vw;
     height: 100%;
     background-color: var(--color-bg-alt);
     border-right: 2px solid var(--color-gold);
@@ -1042,27 +1152,39 @@ li {
     box-shadow: 2px 0 15px rgba(0, 0, 0, 0.8);
 }
 
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--color-gold);
+}
+
+.mobile-logo {
+    width: 130px;
+    height: auto;
+}
+
 .mobile-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
+    position: static;
     background: none;
     border: none;
     color: var(--color-gold);
     font-size: 2rem;
     cursor: pointer;
+    line-height: 1;
 }
 
 .mobile-nav {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .mobile-link {
     font-family: var(--font-nav);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 600;
     color: var(--color-gold);
     padding: 0.8rem;
@@ -1073,18 +1195,37 @@ li {
     border-radius: 0;
 }
 
+.mobile-accordion-trigger {
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+}
+
 .mobile-submenu {
     display: flex;
     flex-direction: column;
-    padding-left: 1.5rem;
+    padding-left: 1.2rem;
     background: rgba(0, 0, 0, 0.2);
 }
 
 .mobile-subitem {
-    font-size: 1rem;
-    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem;
     border-bottom: 1px solid rgba(58, 46, 36, 0.5);
     color: var(--color-text);
+}
+
+.mobile-subgroup-title {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: var(--color-gold);
+    padding: 0.6rem 0.8rem 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
 }
 
 .rotate-up {
@@ -1546,8 +1687,8 @@ li {
 @media (min-width: 1024px) {
 
   .site-main {
-    max-width: 860px;
-    padding: 2rem 2.5rem;
+    max-width: 960px;
+    padding: 2rem 3rem;
     margin: 1.5rem auto;
   }
 
@@ -1557,7 +1698,7 @@ li {
 
   .bio-section {
     column-count: 2;
-    column-gap: 2.5rem;
+    column-gap: 3rem;
   }
 
   .guardia-images img {
@@ -1566,46 +1707,192 @@ li {
   }
 
   .pdf-viewer-container {
-    max-width: 860px;
+    max-width: 960px;
+  }
+
+  /* --- Desktop typography refinement --- */
+  .site-main p {
+    line-height: 1.7;
+    margin-bottom: 1.3em;
+  }
+
+  .book-intro {
+    line-height: 1.8;
+  }
+
+  .equip-grid {
+    gap: 1.8rem;
+  }
+
+  .equip-sub-list {
+    gap: 1.5rem;
+  }
+
+  .timeline-container {
+    padding-left: 2.2rem;
+  }
+
+  .technical-focus {
+    padding: 2rem 2.5rem;
+    margin: 2.5rem 0;
   }
 
 }
 
 /* ============================================= */
-/* Responsive — Desktop Standard (1280px+) */
+/* Responsive — Desktop Standard (1280px+)       */
 /* ============================================= */
 
 @media (min-width: 1280px) {
 
   .site-main {
-    max-width: 1060px;
+    max-width: 1200px;
     padding: 2.5rem 4rem;
     margin: 2rem auto;
   }
 
+  .site-header {
+    padding: 0 3rem;
+  }
+
+  .bio-section {
+    column-gap: 3.5rem;
+    line-height: 1.75;
+  }
+
   .pdf-viewer-container {
-    max-width: 1060px;
+    max-width: 1200px;
   }
 
   .passeggio-hero-img {
     width: 520px;
   }
 
+  /* --- Wider cards and sub-items --- */
+  .equip-grid {
+    gap: 2rem;
+  }
+
+  .equip-sub-item {
+    padding: 1.4rem 1.6rem;
+  }
+
+  .book-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .assault-content {
+    padding: 1.2rem 1.5rem;
+  }
+
 }
 
 /* ============================================= */
-/* Responsive — Wide Screen (1440px+) */
+/* Responsive — Wide Screen (1440px+)            */
 /* ============================================= */
 
 @media (min-width: 1440px) {
 
   .site-main {
-    max-width: 1100px;
+    max-width: 1400px;
     padding: 3rem 5rem;
   }
 
+  .site-header {
+    padding: 0 4rem;
+  }
+
+  .bio-section {
+    column-gap: 4rem;
+    line-height: 1.8;
+  }
+
   .pdf-viewer-container {
-    max-width: 1100px;
+    max-width: 1400px;
+  }
+
+  .site-main p {
+    line-height: 1.75;
+    margin-bottom: 1.4em;
+  }
+
+  .book-intro {
+    font-size: 1.15rem;
+    line-height: 1.85;
+  }
+
+  .equip-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .equip-sub-item {
+    padding: 1.6rem 2rem;
+  }
+
+  .equip-tabs-nav {
+    gap: 0.8rem;
+    padding-bottom: 1rem;
+  }
+
+  .equip-tab-btn {
+    padding: 0.6rem 1.5rem;
+  }
+
+  .timeline-container {
+    padding-left: 2.5rem;
+    margin: 2.5rem 0;
+  }
+
+  .assault-content {
+    padding: 1.4rem 1.8rem;
+  }
+
+  .technical-focus {
+    padding: 2.5rem 3rem;
+    margin: 3rem 0;
+  }
+
+  .hero-section {
+    margin-bottom: 4rem;
+  }
+
+  .book-header {
+    margin-bottom: 3rem;
+  }
+
+}
+
+/* ============================================= */
+/* Responsive — Ultra-Wide Screen (1920px+)      */
+/* ============================================= */
+
+@media (min-width: 1920px) {
+
+  .site-main {
+    max-width: 1500px;
+    padding: 3.5rem 6rem;
+  }
+
+  .site-header {
+    padding: 0 5rem;
+  }
+
+  .bio-section {
+    column-gap: 5rem;
+  }
+
+  .pdf-viewer-container {
+    max-width: 1500px;
+  }
+
+  .equip-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 3rem;
   }
 
 }
